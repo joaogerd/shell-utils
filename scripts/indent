@@ -1,0 +1,49 @@
+#!/usr/bin/emacs --script
+;;BOP
+;;
+;; !DESCRIPTION:
+;;   Este script indenta e remove tabs de arquivos automaticamente usando Emacs.
+;;   Ele é útil para padronizar código e arquivos de configuração.
+;;
+;; !USAGE:
+;;   Para rodar o script em um ou mais arquivos:
+;;     ./indent arquivo1.c arquivo2.sh
+;;   Para rodar em todos os arquivos de um diretório:
+;;     find . -name "*.sh" | xargs ./indent
+;;
+;; !AUTHOR:
+;;   Criado por J. G. de Mattos
+;;
+;; !REVISION HISTORY:
+;;   05 fev 2025 - J. G. de Mattos - Versão inicial
+;;   06 fev 2025 - Melhorias na verificação de arquivos e mensagens de log
+;;
+;;EOP
+
+(setq require-final-newline 'visit)  ;; Garante que o arquivo termina com uma nova linha
+
+;;BOC
+(defun indent-files (files)
+  "Aplica indentação e formatação em uma lista de FILES."
+  (cond 
+   (files
+    (let ((file (car files))) 
+      (if (file-exists-p file)
+          (progn
+            (message "📄 Processando: %s" file)
+            (find-file file)
+            (set-buffer-file-coding-system 'utf-8) ;; Força UTF-8
+            (untabify (point-min) (point-max))     ;; Converte tabs em espaços
+            (indent-region (point-min) (point-max)) ;; Aplica indentação automática
+            (save-buffer)                          ;; Salva o arquivo
+            (kill-buffer)                          ;; Fecha o buffer
+            (message "✅ Arquivo formatado: %s" file))
+        (message "❌ Arquivo não encontrado: %s" file)))
+    (indent-files (cdr files))))) ;; Chamada recursiva para o próximo arquivo
+;;EOC
+
+;; Executa a função com os arquivos passados como argumentos
+(indent-files command-line-args-left)
+
+(message "🎯 Indentação concluída para todos os arquivos.")
+;; EOF
