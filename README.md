@@ -11,6 +11,7 @@ Este repositório contém uma coleção de **scripts Shell** desenvolvidos para 
 │── 📜 .gitignore      # Arquivos ignorados pelo Git
 │── 📂 scripts/        # Diretório contendo os scripts Shell
 │    │── argparse.sh   # Script para parsing de argumentos
+│    │── indent        # Script para indentação automática com Emacs
 │    │── exemplo.sh    # Outros scripts...
 ```
 
@@ -48,7 +49,22 @@ parse_arguments "$@"
 echo "Valor de TRC: $TRC"
 ```
 
-### 2️⃣ Outros Scripts...
+### 2️⃣ `indent`
+> **Descrição:** Script para indentação automática de arquivos usando Emacs.
+> **Uso:** Remove tabs, aplica indentação e salva arquivos automaticamente.
+
+Exemplo de uso:
+```bash
+chmod +x indent
+./indent arquivo1.c arquivo2.sh
+```
+
+Se deseja processar todos os arquivos em um diretório:
+```bash
+find . -name "*.sh" | xargs ./indent
+```
+
+### 3️⃣ Outros Scripts...
 - Em breve...
 
 ## 📝 Licença
