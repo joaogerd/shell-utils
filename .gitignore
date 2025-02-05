@@ -1,0 +1,6 @@
+# Ignore arquivos desnecessários
+*.log
+*.tmp
+*.swp
+.DS_Store
+__pycache__/
