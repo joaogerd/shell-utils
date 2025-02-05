@@ -12,7 +12,8 @@ Este repositório contém uma coleção de **scripts Shell** desenvolvidos para 
 │── 📂 scripts/        # Diretório contendo os scripts Shell
 │    │── argparse.sh   # Script para parsing de argumentos
 │    │── indent        # Script para indentação automática com Emacs
-│    │── findbin # Script para encontrar arquivos binários e executáveis
+│    │── findbin       # Script para encontrar arquivos binários e executáveis
+│    │── findrecent    # Script para listar arquivos ordenados por data
 │    │── exemplo.sh    # Outros scripts...
 ```
 
@@ -80,12 +81,51 @@ Para especificar um diretório:
 ./findbin /usr/bin
 ```
 
-### 4️⃣ Outros Scripts...
+### 4️⃣ `findrecent`
+> **Descrição:** Script para listar arquivos ordenados por data de modificação ou acesso.
+> **Uso:** Encontra arquivos com base em um padrão e exibe a data de modificação/acesso.
+
+Exemplo de uso:
+```bash
+chmod +x findrecent
+./findrecent "*.sh" long
+```
+
+Formatos disponíveis:
+- `long`  → Exibe informações detalhadas (data modificada, acessada e nome do arquivo)
+- `short` → Exibe uma versão compacta das informações
+
+### 5️⃣ Outros Scripts...
 - Em breve...
 
 ## 📝 Licença
 Este projeto está licenciado sob a **Creative Commons Atribuição-NãoComercial 3.0 (CC BY-NC 3.0)**.
 Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+```
+Creative Commons Legal Code
+
+Attribution-NonCommercial 3.0 Unported
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- NonCommercial — You may not use the material for commercial purposes.
+
+Full License: https://creativecommons.org/licenses/by-nc/3.0/
+```
+
+## 📑 .gitignore
+```
+# Ignore arquivos desnecessários
+*.log
+*.tmp
+.DS_Store
+__pycache__/
+```
 
 ## 🤝 Contribuição
 Sinta-se à vontade para enviar Pull Requests e abrir Issues para melhorias!
@@ -93,8 +133,4 @@ Sinta-se à vontade para enviar Pull Requests e abrir Issues para melhorias!
 ## 📬 Contato
 Caso tenha dúvidas ou sugestões, entre em contato: 
 📧 **joao.gerd@inpe.br**
-
----
-
-> 💡 *Mantenha seus scripts bem documentados e organizados!* 🚀
 

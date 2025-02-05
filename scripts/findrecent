@@ -1,0 +1,58 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+#BOP
+#
+# !DESCRIPTION:
+#   Este script lista arquivos ordenados por data de modificação ou acesso,
+#   permitindo encontrar rapidamente arquivos recentes em um diretório.
+#
+# !USAGE:
+#   Para listar arquivos com um padrão específico:
+#     ./findrecent "<padrão_de_busca>" [formato]
+#
+#   Exemplo:
+#     ./findrecent "*.sh" long
+#
+#   Opções de formato:
+#     long  - Exibe 'Modificado: DATA | Acessado: DATA | Arquivo: NOME'
+#     short - Exibe 'DATA_MODIF DATA_ACESSO NOME'
+#
+# !AUTHOR:
+#   Criado por J. G. de Mattos
+#
+# !REVISION HISTORY:
+#   06 fev 2025 - J. G. de Mattos - Versão inicial
+#   06 fev 2025 - Melhorias na exibição de formatos
+#
+#EOP
+
+#BOC
+# Verifica se foi passado um argumento (padrão de busca)
+if [ "$#" -lt 1 ]; then
+    echo "Uso: $(basename "$0") <padrão_de_busca> [formato]"
+    echo "Exemplo: $(basename "$0") '*.sh' long"
+    echo "Opções de formato:"
+    echo "  long  - Exibe 'Modificado: DATA | Acessado: DATA | Arquivo: NOME'"
+    echo "  short - Exibe 'DATA_MODIF DATA_ACESSO NOME'"
+    exit 1
+fi
+#EOC
+
+#BOC
+# Define o padrão de busca e o formato de saída
+PATTERN="$1"
+FORMAT="${2:-long}"  # Se não especificado, usa "long" por padrão
+
+# Define o formato de saída do comando stat
+if [ "$FORMAT" == "long" ]; then
+    STAT_FORMAT='Modificado: %y | Acessado: %x | Arquivo: %n'
+else
+    STAT_FORMAT='%y %x %n'
+fi
+#EOC
+
+#BOC
+# Executa o comando find, pega as estatísticas dos arquivos e ordena do mais novo para o mais antigo
+find . -iname "$PATTERN" -exec stat --format="$STAT_FORMAT" {} + | sort -r
+#EOC
+#-----------------------------------------------------------------------------#
