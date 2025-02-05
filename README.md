@@ -12,6 +12,7 @@ Este repositório contém uma coleção de **scripts Shell** desenvolvidos para 
 │── 📂 scripts/        # Diretório contendo os scripts Shell
 │    │── argparse.sh   # Script para parsing de argumentos
 │    │── indent        # Script para indentação automática com Emacs
+│    │── findbin # Script para encontrar arquivos binários e executáveis
 │    │── exemplo.sh    # Outros scripts...
 ```
 
@@ -64,7 +65,22 @@ Se deseja processar todos os arquivos em um diretório:
 find . -name "*.sh" | xargs ./indent
 ```
 
-### 3️⃣ Outros Scripts...
+### 3️⃣ `findbin`
+> **Descrição:** Script para encontrar arquivos binários, executáveis, bibliotecas compartilhadas e compactados.
+> **Uso:** Lista arquivos que não são de texto puro dentro de um diretório.
+
+Exemplo de uso:
+```bash
+chmod +x findbin
+./findbin
+```
+
+Para especificar um diretório:
+```bash
+./findbin /usr/bin
+```
+
+### 4️⃣ Outros Scripts...
 - Em breve...
 
 ## 📝 Licença
@@ -76,7 +92,7 @@ Sinta-se à vontade para enviar Pull Requests e abrir Issues para melhorias!
 
 ## 📬 Contato
 Caso tenha dúvidas ou sugestões, entre em contato: 
-📧 **joao.gerd@inpe.br**
+📧 **SEU EMAIL**
 
 ---
 
