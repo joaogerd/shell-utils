@@ -20,7 +20,7 @@ Este repositório contém uma coleção de **scripts Shell** desenvolvidos para 
 ## 🚀 Como Usar
 ### 🔹 Clonando o Repositório
 ```bash
-git close https://github.com/joaogerd/shell-utils.git
+git clone https://github.com/joaogerd/shell-utils.git
 cd shell-scripts/scripts
 ```
 
