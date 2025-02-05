@@ -92,7 +92,7 @@ Sinta-se à vontade para enviar Pull Requests e abrir Issues para melhorias!
 
 ## 📬 Contato
 Caso tenha dúvidas ou sugestões, entre em contato: 
-📧 **SEU EMAIL**
+📧 **joao.gerd@inpe.br**
 
 ---
 
