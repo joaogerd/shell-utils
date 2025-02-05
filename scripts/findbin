@@ -1,0 +1,32 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+#BOP
+#
+# !DESCRIPTION:
+#   Este script encontra e lista arquivos executáveis, binários, bibliotecas
+#   compartilhadas e arquivos compactados em um diretório.
+#
+# !USAGE:
+#   Execute o script no diretório desejado:
+#     ./scan_binaries.sh
+#
+#   Para filtrar por um diretório específico:
+#     ./scan_binaries.sh /caminho/do/diretorio
+#
+# !AUTHOR:
+#   Criado por J. G. de Mattos
+#
+# !REVISION HISTORY:
+#   05 fev 2025 - J. G. de Mattos - Versão inicial
+#   06 fev 2025 - Melhorias no uso de `find` e otimizações de filtragem
+#
+#EOP
+
+# Define diretório alvo (padrão: diretório atual)
+TARGET_DIR="${1:-.}"
+
+#BOC
+find "$TARGET_DIR" -type f -size -100M ! -path "*/vendor/*" ! -path "*/node_modules/*" ! -path "*/.git/*" -exec file -i '{}' \; | \
+grep -E 'x-executable|x-object|octet-stream|charset=binary|x-sharedlib|x-gzip|\.mod'
+#EOC
+#-----------------------------------------------------------------------------#
