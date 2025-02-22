@@ -111,9 +111,12 @@ chmod +x log_manager.sh
 - `OK`      → Mensagem de sucesso
 - `ACTION`  → Ação recomendada ou executada
 - `INFO`    → Mensagem informativa
-- `WARN`    → Aviso
+- `WARNING` → Aviso
 - `ERROR`   → Mensagem de erro
 - `DEBUG`   → Logs detalhados para depuração
+- `NOTICE`  → Important but non-critical information
+- `NEUTRAL` → Neutral message
+- `DETAIL`  → Additional details or technical logs
 
 ### 6️⃣ Outros Scripts...
 - Em breve...
