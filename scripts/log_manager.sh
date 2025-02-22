@@ -14,12 +14,15 @@
 #   ./log_manager.sh -l <log_level> -m <message> [-f <log_file>] [-c <on|off>]
 #
 # !LOG LEVELS:
-#   OK      - Success message
-#   ACTION  - Recommended or performed action
-#   INFO    - Informational message
-#   WARN    - Warning message
-#   ERROR   - Error message
-#   DEBUG   - Debug message (detailed internal logs)
+#   OK       - Success message
+#   ACTION   - Recommended or performed action
+#   INFO     - Informational message
+#   WARNING  - Warning message
+#   ERROR    - Error message
+#   DEBUG    - Debug message (detailed internal logs)
+#   NOTICE   - Important but non-critical information
+#   NEUTRAL  - Neutral message
+#   DETAIL   - Additional details or technical logs
 #
 # !EXAMPLES:
 #   ./log_manager.sh -l INFO -m "Script started successfully."
@@ -28,6 +31,7 @@
 # !REVISION HISTORY:
 #   07 Feb 2025 - J. G. de Mattos - Original version
 #   20 Feb 2025 - J. G. de Mattos - Improved version with colored output option
+#   21 Feb 2025 - J. G. de Mattos - Added new log levels and improved color formatting
 # EOP
 # ----------------------------------------------------------------------------#
 
@@ -35,10 +39,21 @@
 LOG_FILE="./script.log"
 USE_COLOR=true
 
+# ANSI Colors
+GREEN="\e[32m"
+RED="\e[31m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+CYAN="\e[36m"
+MAGENTA="\e[35m"
+WHITE="\e[37m"
+GRAY="\e[90m"
+RESET="\e[0m"
+
 # Function to display usage information
 usage() {
     echo "Usage: $0 -l <log_level> -m <message> [-f <log_file>] [-c <on|off>]"
-    echo "Valid log levels: OK, ACTION, INFO, WARN, ERROR, DEBUG"
+    echo "Valid log levels: OK, ACTION, INFO, WARNING, ERROR, DEBUG, NOTICE, NEUTRAL, DETAIL"
     exit 1
 }
 
@@ -59,7 +74,6 @@ check_log_file() {
     fi
 }
 
-
 # Process parameters using getopts
 while getopts ":l:m:f:c:h" opt; do
     case $opt in
@@ -74,11 +88,7 @@ while getopts ":l:m:f:c:h" opt; do
             ;;
         c)
             if [[ "$OPTARG" =~ ^(on|off)$ ]]; then
-                if [ "$OPTARG" = "on" ]; then
-                    USE_COLOR=true
-                else
-                    USE_COLOR=false
-                fi
+                USE_COLOR=$([ "$OPTARG" = "on" ] && echo true || echo false)
             else
                 echo "[ERROR] Invalid value for -c. Use 'on' or 'off'."
                 usage
@@ -103,7 +113,7 @@ if [ -z "$LOG_LEVEL" ] || [ -z "$MESSAGE" ]; then
     usage
 fi
 
-# Function to log a message to both the console and the log file
+# Function to log a message with correct color formatting
 log_message() {
     local level="$1"
     local msg="$2"
@@ -112,45 +122,39 @@ log_message() {
 
     # Validate log level
     case "$level" in
-        INFO|WARN|ERROR|DEBUG|OK|ACTION)
+        OK|ACTION|INFO|WARNING|ERROR|DEBUG|NOTICE|NEUTRAL|DETAIL)
             ;;
         *)
-            echo "[ERROR] Invalid log level: $level"
+            log_message ERROR "Invalid log level: $level"
             exit 1
             ;;
     esac
 
-    # Construct the log message
-    local log_msg="[$timestamp] [$level] $msg"
+    # Assign correct color based on log level (Only the word inside [])
+    case "$level" in
+        OK)        color="${GREEN}OK${RESET}" ;;
+        ACTION)    color="${BLUE}ACTION${RESET}" ;;
+        INFO)      color="${BLUE}INFO${RESET}" ;;
+        WARNING)   color="${YELLOW}WARNING${RESET}" ;;
+        ERROR)     color="${RED}ERROR${RESET}" ;;
+        DEBUG)     color="${CYAN}DEBUG${RESET}" ;;
+        NOTICE)    color="${MAGENTA}NOTICE${RESET}" ;;
+        NEUTRAL)   color="${WHITE}NEUTRAL${RESET}" ;;
+        DETAIL)    color="${GRAY}DETAIL${RESET}" ;;
+    esac
+
+    # Construct the formatted log message
+    local log_msg="[$timestamp] [${color}] $msg"
 
     # Print to console with optional color
     if [ "$USE_COLOR" = true ]; then
-        case "$level" in
-            INFO|OK)
-                echo -e "\e[32m$log_msg\e[0m"  # Green
-                ;;
-            ACTION)
-                echo -e "\e[34m$log_msg\e[0m"  # Blue
-                ;;
-            WARN)
-                echo -e "\e[33m$log_msg\e[0m"  # Yellow
-                ;;
-            ERROR)
-                echo -e "\e[31m$log_msg\e[0m"  # Red
-                ;;
-            DEBUG)
-                echo -e "\e[36m$log_msg\e[0m"  # Cyan
-                ;;
-            *)
-                echo "$log_msg"
-                ;;
-        esac
+        echo -e "$log_msg"
     else
-        echo "$log_msg"
+        echo "[$timestamp] [$level] $msg"
     fi
 
     # Log to file
-    echo "$log_msg" >> "$LOG_FILE" 2>/dev/null
+    echo "[$timestamp] [$level] $msg" >> "$LOG_FILE" 2>/dev/null
     if [ $? -ne 0 ]; then
         echo "[ERROR] Could not write to log file: $LOG_FILE"
         exit 1
